@@ -13,6 +13,12 @@ def mfcc(file_name):
     mfcc = librosa.feature.mfcc(wave, sr)
     return np.pad(mfcc,((0,0),(0,80-len(mfcc[0]))), mode='constant', constant_values=0)
 
+def raw(file_name):
+    wave, sr = librosa.load(file_name, mono=True)
+    res = np.pad(wave, (0, 22050 - len(wave)), mode='constant', constant_values=0)
+    assert len(res) == 22050
+    return res
+
 def unvectorize_y(y):
     y = np.asarray([SPACE_TOKEN if i==0 else chr(FIRST_INDEX + i) for i in y])
     return ''.join(y).replace(SPACE_TOKEN, ' ').replace('{', '_')
@@ -105,7 +111,7 @@ def sparse_tuple_from(sequences, dtype=np.int32):
     return indices, values, shape
 
 def vectorize_x(path):
-    x = mfcc(path)
+    x = raw(path)
     x = (x - np.mean(x)) / np.std(x)
     x = x.reshape(-1)
     return x
@@ -125,8 +131,9 @@ def plot_x(x):
 
 def main():
     path = 'dataset/yes/0a7c2a8d_nohash_0.wav'
-    x = vectorize_x(path)
+    x = raw(path)
     plot_x(x)
+    print(x.shape)
 
 if __name__ == '__main__':
     main()

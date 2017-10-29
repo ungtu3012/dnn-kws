@@ -4,7 +4,7 @@ import random
 import numpy as np
 
 skip_step = 50
-stop_step = 100
+stop_step = -1
 root = 'dataset/'
 
 X, Y, X_train, X_test, Y_train, Y_test = [], [], [], [], [], []

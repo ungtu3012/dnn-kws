@@ -45,7 +45,7 @@ def train_batch_generator(batchsize=128, show_original=False):
                 print('original: ', utils.unvectorize_y(Y_train[i]))
             
             if len(X_batch) >= batchsize:
-                yield X_batch, Y_batch
+                yield np.array(X_batch), np.array(Y_batch)
                 X_batch = []
                 Y_batch = []
 
