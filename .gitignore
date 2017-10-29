@@ -43,3 +43,6 @@ Thumbs.db
 *.npy
 *.wav
 __pycache__
+.ipynb_checkpoints
+graphs
+checkpoints

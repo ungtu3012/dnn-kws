@@ -23,12 +23,12 @@ def create_graph(hyper_params=hyper_params):
         with tf.name_scope('fc') as scope:
             i = 0
             out = X
-            last_hidden = hyper_params['num_hiddens_fc'][0]
+            last_hidden = hyper_params['num_features']
             for num_hidden in hyper_params['num_hiddens_fc']:
-                i += 1
                 W = tf.Variable(tf.truncated_normal([last_hidden, num_hidden],stddev=0.1, name='W_%d' % i))
                 b = tf.Variable(tf.constant(0., shape=[num_hidden], name='b_%d' % i))
                 out = tf.nn.relu(tf.nn.xw_plus_b(out, W, b))
+                i += 1                
                 last_hidden = num_hidden
             i += 1
             num_output = hyper_params['num_classes']
