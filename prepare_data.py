@@ -4,8 +4,16 @@ import random
 import numpy as np
 
 skip_step = 50
-stop_step = -1
+stop_step = 100
 root = 'dataset/'
+
+def get_words():
+    for word in os.listdir(root):
+        path = os.path.join(root, word)
+        if os.path.isdir(path) and '_' not in word:
+            yield word
+
+words = list(get_words())
 
 X, Y, X_train, X_test, Y_train, Y_test = [], [], [], [], [], []
 
@@ -26,10 +34,10 @@ def paths(root):
 def reload():
     X.clear(), Y.clear()
 
-def load(path=root, label='yes'):
-    for wave_path in paths(path+label):
+def load(word, path=root):
+    for wave_path in paths(path+word):
         X.append(utils.vectorize_x(wave_path))
-        Y.append(0 if label=='yes' else 1)
+        Y.append(words.index(word))
 
 def shuffle():
     global X
@@ -61,16 +69,11 @@ def export(file_name, X=X, Y=Y):
     np.save('%s_y.npy' % file_name, np.array(Y))
     print('[+] Done!')
 
-def get_words():
-    for word in os.listdir(root):
-        path = os.path.join(root, word)
-        if os.path.isdir(path) and '_' not in word:
-            yield word
-
 def main():
-    for word in get_words():
-        print('[+] Prepare "%s" set' % word)
-        load(path=root, label=word)
+
+    for word in words:
+        print('[+] Prepare "%s" set, index %d' % (word, words.index(word)))
+        load(word)
 
     print('[+] Shuffle dataset')
     shuffle()
