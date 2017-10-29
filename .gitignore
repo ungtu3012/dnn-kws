@@ -42,3 +42,4 @@ Thumbs.db
 # My rules
 *.npy
 *.wav
+__pycache__
