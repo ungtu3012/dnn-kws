@@ -107,7 +107,7 @@ def sparse_tuple_from(sequences, dtype=np.int32):
 def vectorize_x(path):
     x = mfcc(path)
     x = (x - np.mean(x)) / np.std(x)
-    x = x.reshape([-1, 1])
+    x = x.reshape(-1)
     return x
 
 def vectorize_y(y):
