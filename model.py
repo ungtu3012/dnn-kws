@@ -2,7 +2,7 @@ import tensorflow as tf
 
 hyper_params = {
     'batch_size': 28,
-    'num_features': 1000
+    'num_features': 1000,
     'num_hiddens_fc': [200, 200],
     'num_classes': 28,
     'learning_rate': 1e-2
