@@ -8,6 +8,11 @@ SPACE_INDEX = 0
 FIRST_INDEX = ord('a') - 1  # 0 is reserved to space
 num_classes = ord('z') - ord('a') + 1 + 1 + 1
 
+def mfcc(file_name):
+    wave, sr = librosa.load(file_name, mono=True)
+    mfcc = librosa.feature.mfcc(wave, sr)
+    return np.pad(mfcc,((0,0),(0,80-len(mfcc[0]))), mode='constant', constant_values=0)
+
 def unvectorize_y(y):
     y = np.asarray([SPACE_TOKEN if i==0 else chr(FIRST_INDEX + i) for i in y])
     return ''.join(y).replace(SPACE_TOKEN, ' ').replace('{', '_')
@@ -100,7 +105,7 @@ def sparse_tuple_from(sequences, dtype=np.int32):
     return indices, values, shape
 
 def vectorize_x(path):
-    x, sr = librosa.load(path, mono=True)
+    x = mfcc(path)
     x = (x - np.mean(x)) / np.std(x)
     x = x.reshape([-1, 1])
     return x
@@ -115,14 +120,11 @@ def vectorize_y(y):
     return y
 
 def plot_x(x):
-    plt.subplot(2,1,1)
-    plt.imshow(x, cmap=plt.cm.gray, interpolation='nearest')
-    plt.subplot(2,1,2)
     plt.plot(x)
     plt.show()
 
 def main():
-    path = '../../archive/speech_commands/on/0a7c2a8d_nohash_0.wav'
+    path = 'dataset/yes/0a7c2a8d_nohash_0.wav'
     x = vectorize_x(path)
     plot_x(x)
 
